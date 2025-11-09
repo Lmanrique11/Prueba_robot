@@ -1,1 +1,41 @@
-
+{
+  "data_urls": [
+    "http://www.universidad.ch/ATLAS/outreach/opendata-2020/data/data_A.GamGam.root",
+    "http://www.universidad.ch/ATLAS/outreach/opendata-2020/data/data_B.GamGam.root",
+    "http://www.universidad.ch/ATLAS/outreach/opendata-2020/data/data_C.GamGam.root",
+    "http://www.universidad.ch/ATLAS/outreach/opendata-2020/data/data_D.GamGam.root"
+  ],
+  "treename": "mini",
+  "base_cuts": {
+    "photon_pt_min": 10.0,
+    "photon_eta_max": 2.37,
+    "photon_eta_gap_low": 1.37,
+    "photon_eta_gap_high": 1.52,
+    "ptcone30_ratio_max": 0.065,
+    "etcone20_ratio_max": 0.065
+  },
+  "analysis_cuts": [
+    {
+      "name": "sym_25GeV",
+      "pt_photon1_min": 25.0,
+      "pt_photon2_min": 25.0
+    },
+    {
+      "name": "sym_50GeV",
+      "pt_photon1_min": 50.0,
+      "pt_photon2_min": 50.0
+    },
+    {
+      "name": "asym_40_20GeV",
+      "pt_photon1_min": 40.0,
+      "pt_photon2_min": 20.0
+    },
+    {
+      "name": "pt_scan_10_100_step_5",
+      "type": "scan",
+      "pt_min": 10.0,
+      "pt_max": 105.0,
+      "pt_step": 5.0
+    }
+  ]
+}
