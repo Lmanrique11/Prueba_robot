@@ -1,4 +1,4 @@
-name: CERN Data Analysis Pipeline
+name: CERN Data Analysis Pipeline (Dos Fases)
 
 on:
   push:
@@ -8,12 +8,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  analyze_and_deploy:
+  ## --- JOB 1: ANALYZE AND UPLOAD ARTIFACTS (Crea los archivos 'docs/') ---
+  analyze:
     runs-on: ubuntu-latest
-    
     env:
       CACHE_KEY: cern-opendata-root-v1
-
+    
     steps:
       - name: 1. Checkout Repository
         uses: actions/checkout@v4
@@ -26,10 +26,9 @@ jobs:
           python-version: '3.11'
 
       - name: 3. Install Python Dependencies
-        run: |
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt
               
-      - name: 4. Restore/Download Data Cache (The Key Step!) 💾
+      - name: 4. Restore/Download Data Cache 💾
         uses: actions/cache@v4
         id: cache-data
         with:
@@ -38,28 +37,38 @@ jobs:
 
       - name: 5. Execute Data Analysis (Python)
         run: |
-          echo "Starting analysis. This will download files only on first run."
+          echo "Starting analysis."
           python analysis.py
               
-      - name: 6. Prepare Results (Merge Artifacts)
-        run: |
-           cp -r results/* docs/
+      - name: 6. Prepare Docs Folder
+        run: cp -r results/* docs/
                  
       - name: 7. Upload Results as Artifact ⬆️
         uses: actions/upload-artifact@v4
         with:
-          name: analysis-results
+          name: analysis-docs # Nombre del artefacto creado
           path: docs/
 
-      - name: 8. Deploy to GitHub Pages
-        if: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' }}
+  ## --- JOB 2: DEPLOY TO GITHUB PAGES (Usa los archivos creados) ---
+  deploy:
+    runs-on: ubuntu-latest
+    needs: analyze # Asegura que el Job 1 (analyze) terminó correctamente
+    
+    # SOLO se ejecuta el despliegue en las ramas principales (main/master)
+    if: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' }}
+    
+    steps:
+      - name: 1. Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: analysis-docs # Descarga el artefacto del Job 1
+          path: docs/ # Lo descarga directamente en la carpeta 'docs'
+          
+      - name: 2. Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: docs
           
-      # El error estaba aquí.
-      # Esta línea (65) debe tener 6 espacios al inicio.
-      - name: 9. Final Setup for GitHub Pages Service
-        # Esta línea (66) debe tener 8 espacios al inicio.
-        run: echo "REMINDER: Set GitHub Pages source to 'gh-pages' or 'docs' folder."
+      - name: 3. Final Setup Reminder
+        run: echo "REMINDER: Set GitHub Pages source to 'docs' folder in repo settings."
