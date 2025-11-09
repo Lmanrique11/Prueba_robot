@@ -54,22 +54,19 @@ jobs:
         run: |
           mv results docs
           
-      - name: 7. Upload Results as Artifact ⬆️
+      name: 7. Upload Results as Artifact ⬆️
         uses: actions/upload-artifact@v4
         with:
           name: analysis-results
           path: docs/
-          # No es necesario retener el artifact por mucho tiempo si lo desplegamos
 
       - name: 8. Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        # Nota: La condición 'if' debe estar al mismo nivel que 'uses' y 'name'
         if: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' }}
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs # Publica el contenido de la carpeta 'docs'
-          # La opción 'keep_files: true' es útil si tienes otros archivos en gh-pages
-          # y solo quieres actualizar el contenido de 'docs'.
+          publish_dir: docs # Asegúrate de que esto coincide con la carpeta renombrada en el paso 6
           
       - name: 9. Final Setup for GitHub Pages Service
-        # Este paso es una nota para recordarte la configuración manual
         run: echo "REMINDER: Set GitHub Pages source to 'gh-pages' or 'docs' folder."
