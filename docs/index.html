@@ -1,1 +1,43 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CERN ATLAS $\gamma\gamma$ Analysis Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Análisis de Di-Fotones ATLAS Open Data</h1>
+        <p>Resultados automatizados mediante GitHub Actions. Configuración del análisis en <a href="https://github.com/${{ github.repository }}/blob/main/settings.json">settings.json</a>.</p>
+    </header>
+
+    <main id="dashboard-container">
+        <section id="menu">
+            <h2>Seleccionar Corte de $p_T$</h2>
+            <select id="cut-selector"></select>
+        </section>
+
+        <section id="stats-section">
+            <h2>📊 Estadísticas Descriptivas</h2>
+            <div id="stats-table-container">
+                <p>Selecciona un corte para ver las estadísticas.</p>
+            </div>
+        </section>
+
+        <section id="plots-section">
+            <h2>📈 Gráficos Interactivos (Plotly)</h2>
+            <div id="plots-container">
+                <p>Los gráficos interactivos se cargarán aquí.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Automatización de Física de Partículas</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
