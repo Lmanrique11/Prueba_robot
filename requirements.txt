@@ -1,1 +1,8 @@
-
+uproot
+awkward
+numpy
+pandas
+fastparquet
+requests
+vector
+plotly
