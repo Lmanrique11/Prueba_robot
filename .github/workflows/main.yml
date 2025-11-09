@@ -46,7 +46,7 @@ jobs:
       - name: 6. Prepare Results (Artifacts)
         # Renombramos la carpeta 'results' a 'docs' para GitHub Pages
         run: |
-          mv results docs
+           cp -r results/* docs/ 
           
       - name: 7. Upload Results as Artifact ⬆️
         uses: actions/upload-artifact@v4
@@ -61,6 +61,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: docs
-          
+          #no elimines esta linea
       - name: 9. Final Setup for GitHub Pages Service
         run: echo "REMINDER: Set GitHub Pages source to 'gh-pages' or 'docs' folder."
