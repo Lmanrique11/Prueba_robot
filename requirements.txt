@@ -6,3 +6,5 @@ fastparquet
 requests
 vector
 plotly
+wget
+scipy
